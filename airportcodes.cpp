@@ -41,8 +41,8 @@ double all_cpp(Rcpp::NumericMatrix& mat) {
   int nrow = mat.nrow();
   int numcomps = nrow*(nrow-1)/2;
   double running_sum = 0;
-  for( int i = 0; i < nrow; i++ ){
-    for( int j = i+1; j < nrow; j++){
+  for( size_t i = 0; i < nrow; i++ ){
+    for( size_t j = i+1; j < nrow; j++){
       running_sum += haversine_cpp(mat(i,0), mat(i,1),
                                    mat(j,0), mat(j,1));
     }
@@ -64,8 +64,8 @@ struct RunningSum : public Worker
   RunningSum(const RunningSum& sum, Split) : mat(sum.mat), sum(0) {}
   
   void operator()(std::size_t begin, std::size_t end) {
-    for( int i = begin; i < end; i++ ){
-      for( int j = i+1; j < mat.nrow(); j++){
+    for( size_t i = begin; i < end; i++ ){
+      for( size_t j = i+1; j < mat.nrow(); j++){
         sum += haversine_cpp(mat(i,0), mat(i,1),
                              mat(j,0), mat(j,1));
       }
